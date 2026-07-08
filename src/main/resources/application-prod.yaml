@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASS}
+    hikari:
+      maximum-pool-size: 5
+
+  jpa:
+    show-sql: false
