@@ -2,6 +2,7 @@ package com.lavaja.saas.backend.infra.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,8 +22,9 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable()) // Desabilitado para APIs stateless
                 .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/public/**").permitAll() // Caminhos públicos
-                    .anyRequest().authenticated() // Restante exige login
+                .requestMatchers(HttpMethod.POST, "/cadastro/**").permitAll()
+                .requestMatchers("/error/**").permitAll()// Caminhos públicos
+                .anyRequest().authenticated() // Restante exige login
                 )
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Ideal para JWT/SaaS
