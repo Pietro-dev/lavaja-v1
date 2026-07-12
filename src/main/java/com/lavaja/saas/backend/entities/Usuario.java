@@ -27,7 +27,7 @@ public class Usuario implements UserDetails {
     @NotBlank (message = "O nome é obrigatório!")
     private String nome;
 
-    @NotBlank @Email(message = "E-mail inválido")
+    @NotBlank @Column(unique = true) @Email(message = "E-mail inválido")
     private String email;
 
     @NotBlank @Size(min = 6)
