@@ -16,3 +16,7 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+api:
+  security:
+    token:
+      secret: ${TOKEN_SECRET_KEY}
