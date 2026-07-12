@@ -1,37 +1,49 @@
 package com.lavaja.saas.backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.AnyDiscriminatorImplicitValues;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@Table(name = "usuarios")
 public class Usuario implements UserDetails {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank (message = "O nome é obrigatório!")
     private String nome;
+
+    @NotBlank @Email(message = "E-mail inválido")
     private String email;
+
+    @NotBlank @Size(min = 6)
     private String senha;
 
-    //Roles (empresa ou cliente)
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> roles;
+    @CollectionTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 
     @Override
-    public Collection<?extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
         return roles.stream()
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -41,7 +53,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.nome;
+        return this.email;
     }
 
 }
