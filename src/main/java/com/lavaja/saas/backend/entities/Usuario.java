@@ -30,7 +30,7 @@ public class Usuario implements UserDetails {
     @NotBlank @Column(unique = true) @Email(message = "E-mail inválido")
     private String email;
 
-    @NotBlank @Size(min = 6)
+    @NotBlank(message = "Insira uma senha válida") @Size(min = 6)
     private String senha;
 
     @ElementCollection(fetch = FetchType.EAGER)
