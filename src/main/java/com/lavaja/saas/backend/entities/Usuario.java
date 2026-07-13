@@ -1,5 +1,6 @@
 package com.lavaja.saas.backend.entities;
 
+import com.lavaja.saas.backend.dtos.UsuarioInputDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -54,6 +55,13 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    public void atualizarUsuario(UsuarioInputDTO dto, String senhaCriptografada) {
+        this.senha = senhaCriptografada;
+        this.nome = dto.nome();
+        this.email = dto.email();
+
     }
 
 }
